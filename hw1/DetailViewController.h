@@ -10,4 +10,12 @@
 
 @interface DetailViewController : UIViewController
 
+
+@property (strong, nonatomic) IBOutlet UINavigationItem *navbar;
+@property (strong, nonatomic) IBOutlet UITextView *textview;
+@property (strong, nonatomic) IBOutlet UIImageView *photo;
+@property (strong, nonatomic) IBOutlet UIImageView *line;
+@property (strong, nonatomic) IBOutlet UIImageView *photo2;
+
+
 @end

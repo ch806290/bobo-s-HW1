@@ -7,12 +7,17 @@
 //
 
 #import "TableViewController.h"
+#import "DetailViewController.h"
+
 
 @interface TableViewController ()
 
 @end
 
+
+
 @implementation TableViewController
+@synthesize MyTable;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -27,6 +32,9 @@
 {
     [super viewDidLoad];
 
+    self.MyTable.delegate = self;
+    self.MyTable.dataSource = self;
+    list = [[NSMutableArray alloc] initWithObjects:@"☻基本資料",@"☻學歷",@"☻興趣",@"☻專長",@"☻獎項", nil];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -46,26 +54,54 @@
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [list count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"TableCell";
+    UITableViewCell *cell = [tableView
+                             dequeueReusableCellWithIdentifier:CellIdentifier
+                             forIndexPath:indexPath];
     
-    // Configure the cell...
+    if (cell == nil){
+        cell = [[UITableViewCell alloc]
+                initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    cell.textLabel.text = [list objectAtIndex:indexPath.row];
+    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if ([segue.identifier isEqualToString:@"line"]) {
+        DetailViewController *detailviewcontroller = segue.destinationViewController;
+        NSIndexPath *indexpath = nil;
+        NSString *titlestring = nil;
+        
+        NSIndexPath *myIndexPath = [self.tableView
+                                    indexPathForSelectedRow];
+        
+        detailviewcontroller.navbar.title = [list objectAtIndex:myIndexPath.row];
+        
+        indexpath = [self.MyTable indexPathForSelectedRow ];
+        //titlestring = [list objectAtIndex:indexpath.row];
+        
+        //[[segue destinationViewController] setTitle:titlestring];
+    }
+    
+    
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
